@@ -7,7 +7,7 @@ This framework is heavily inspired by and adapted from the pioneering research c
 * **Paper:** *TradingAgents: Multi-Agents LLM Financial Trading Framework* (2024/2025)
 * **Authors:** Yijia Xiao (UCLA), Edward Sun (UCLA), Di Luo (MIT), and Wei Wang (UCLA)
 
-## 🔗 Original Framework & Repository
+##  Original Framework & Repository
 This project is built upon the theoretical architecture and open-source implementation of the original paper:
 * **Official Repository:** [TauricResearch/TradingAgents](https://github.com/TauricResearch/TradingAgents)
 * **Paper Link:** [arXiv:2412.20138](https://arxiv.org/abs/2412.20138)
