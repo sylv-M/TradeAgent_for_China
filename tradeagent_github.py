@@ -90,7 +90,6 @@ def calculate_china_fund_metrics(fund_code: str):
         return metrics, near_5.to_string(index=False)
 
     except Exception:
-        # 降级防御，保障路演现场逻辑不中断
         return {
             "cr": "-4.12%",
             "arr": "-10.85%",
@@ -105,7 +104,7 @@ def calculate_china_fund_metrics(fund_code: str):
 def print_metrics_header(fund_code: str, metrics: dict, trend_summary: str):
     """优先输出名词解释表格和指标数据"""
     print("\n" + "=" * 70)
-    print(f" 📑 基金代码 [{fund_code}] 专业量化评价指标清算报告")
+    print(f" 基金代码 [{fund_code}] 专业量化评价指标清算报告")
     print("=" * 70)
 
     print("\n一、 可能用到的名词解释：")
@@ -135,10 +134,8 @@ def print_metrics_header(fund_code: str, metrics: dict, trend_summary: str):
 
 # ==================== 4. 多智能体工作流 ====================
 def run_china_fund_pipeline(fund_code: str, user_status: str):
-    # 1. 采集数据与计算指标
     metrics, trend_summary = calculate_china_fund_metrics(fund_code)
 
-    # 2. 率先打印排版整齐的名词解释与数据指标
     print_metrics_header(fund_code, metrics, trend_summary)
 
     quant_document = {
@@ -154,13 +151,13 @@ def run_china_fund_pipeline(fund_code: str, user_status: str):
 
     # 智能体 1: 基金量化分析师
     analyst_preset = "你是一名专业的公募基金量化分析师。请用严谨的中文行业术语，对输入的 JSON 数据包（CR收益、MDD回撤、SR风险收益比）进行结构化解读，指出波动成因和整体健康度。"
-    print("\n[1] 💡 基金量化分析师正在处理指标数据...")
+    print("\n[1] 基金量化分析师正在处理指标数据...")
     analyst_report = ask_deepseek_json(json.dumps(quant_document, ensure_ascii=False), analyst_preset)
     print(f">>> 基金分析师诊断报告 <<<\n{json.dumps(analyst_report, indent=4, ensure_ascii=False)}")
     print("-" * 60)
 
     # 智能体 2: 研究员多轮辩论
-    print("[2] ⚔️ 看多研究员与看空研究员正在后台针对分析师报告展开【2轮深度对立辩论】...")
+    print("[2] 看多研究员与看空研究员正在后台针对分析师报告展开【2轮深度对立辩论】...")
     bull_preset = "你是一名乐观的基金研究员。你倾向于寻找周期性反弹机会、长期定投空间和低位分批建仓的红利。"
     bear_preset = "你是一名防守回撤型基金研究员。你极其看重最大回撤风险，倾向于提示行业下行压力和保护本金安全。"
 
@@ -188,7 +185,7 @@ def run_china_fund_pipeline(fund_code: str, user_status: str):
         "最新单位净值": metrics["latest_nav"],
         "核心博弈冲突": debate_summary
     }
-    print("[3] 🛡️ 大学生理财风控官正在核算钱包回撤风险...")
+    print("[3] 大学生理财风控官正在核算钱包回撤风险...")
     risk_report = ask_deepseek_json(json.dumps(risk_input, ensure_ascii=False), risk_preset)
     print(f">>> 大学生专属风险预警报告 <<<\n{json.dumps(risk_report, indent=4, ensure_ascii=False)}")
     print("-" * 60)
@@ -196,11 +193,11 @@ def run_china_fund_pipeline(fund_code: str, user_status: str):
     # 智能体 4: 最终资产配置决策主理人
     manager_preset = "你是一名理性的基金主理人，最终为用户的真金白银负责。你需要参考夏普比率（SR）的表现，结合风控预警，给出一个明确的、不模棱两可、绝不误导年轻人的操作方案。"
     manager_prompt = f"基金夏普比率(SR)为 {metrics['sr']}。请结合风控报告输出实操方案：\n{json.dumps(risk_report, ensure_ascii=False)}"
-    print("[4] 🏆 主理人正在生成最终资产配置方案...")
+    print("[4] 主理人正在生成最终资产配置方案...")
     final_decision = ask_deepseek_json(manager_prompt, manager_preset)
     print(f">>> 最终执行决策方案 <<<\n{json.dumps(final_decision, indent=4, ensure_ascii=False)}")
     print("=" * 70)
-    print("🎉 多智能体协作决策完成。")
+    print("多智能体协作决策完成。")
     print("=" * 70)
 
 
@@ -208,17 +205,17 @@ def run_china_fund_pipeline(fund_code: str, user_status: str):
 if __name__ == "__main__":
     while True:
         print("\n" + "*" * 60)
-        print("                 🌟 开始新一轮基金智能诊断 🌟")
+        print("                 开始新一轮基金智能诊断")
         print("*" * 60)
 
-        user_fund = input("\n👉 请输入基金代码 (输入 q 退出, 直接回车默认为 161725白酒): ").strip()
+        user_fund = input("\n请输入基金代码 (输入 q 退出, 直接回车默认为 161725白酒): ").strip()
         if user_fund.lower() == 'q':
-            print("\n👋 感谢使用，再见！")
+            print("\n感谢使用，再见！")
             break
         if not user_fund:
             user_fund = "161725"
 
-        print("\n👉 提示：请真实描述您的经济现状（如：生活费多少、闲钱多少、为什么想买）。")
+        print("\n提示：请真实描述您的经济现状（如：生活费多少、闲钱多少、为什么想买）。")
         user_status = input("请输入您当前的个人财务状况与理财困惑:\n").strip()
         if not user_status:
             user_status = "我有1万闲钱，请结合最近这个基金的情况给我购买建议。"
