@@ -7,7 +7,7 @@ import akshare as ak
 import pandas as pd
 
 # ==================== 1. 配置 接口 ====================
-DEEP_SEEK_KEY = os.environ.get("DEEP_SEEK_KEY")
+DEEP_SEEK_KEY = os.environ.get("DEEP_SEEK_KEY")#使用时请替换成自己的api key，不是deepseek的也可以，此处用deepseek仅为举例子
 
 
 def ask_deepseek_json(prompt: str, role_preset: str) -> dict:
