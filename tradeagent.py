@@ -121,7 +121,7 @@ def print_metrics_header(fund_code: str, metrics: dict, trend_summary: str):
 
     print("\n一、 可能用到的名词解释：")
     print("-" * 70)
-    print(f"{'指标简称':<10} | {'金融学含义':<22} | {'对大学生的通俗解释'}")
+    print(f"{'指标简称':<10} | {'金融学含义':<22} | {'通俗解释'}")
     print("-" * 70)
     print(f"{'CR (收益)':<10} | {'累计收益率 (Cumulative Return)':<20} | 考核这段时间内你的钱总共涨了或跌了多少。")
     print(
