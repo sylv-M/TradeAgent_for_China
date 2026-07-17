@@ -1,44 +1,80 @@
-# China-Fund-Multi-Agent
+# 中国基金多智能体诊断框架
 
-An interactive, multi-agent quantitative framework designed for financial diagnostics and risk mitigation of Chinese mutual funds, tailored specifically for undergraduate retail investors.
+一个面向中国公募基金的交互式多智能体分析原型。项目将基金净值、公开披露的持仓和基金经理资料整理为可阅读的风险信息，重点服务于希望学习理财、但缺乏经验与信心的年轻投资者。
 
-## 基金透视（新增）
+> 本项目用于信息学习与风险理解，不构成投资建议、收益承诺或买卖指令。
 
-在原有净值诊断前，程序会新增一段基于公开披露资料的基金透视：
+## 核心能力
 
-- 最新披露期的前十大持仓和行业配置；
-- 与上一个报告期相比的持仓比例变化；
-- 基金经理的公开任职资料、在管规模和现任基金最佳回报；
-- 基金成立以来、近一年、近三年、年化收益和成立以来最大回撤。
+- **基金量化指标**：基于基金单位净值计算累计收益、年化收益、夏普比率与最大回撤。
+- **多视角讨论**：分析师、看多研究员、看空研究员、风控官和总结角色依次解释数据与风险。
+- **基金透视**：展示最新披露期的前十大持仓、行业配置、持仓期际变化和基金经理公开资料。
+- **基金历史表现**：展示成立以来、近一年、近三年、年化收益和最大回撤，帮助理解历史波动。
+- **风险提示**：将最大回撤等抽象指标转化为更容易理解的风险语言，并强调决策权始终属于用户。
 
-持仓/行业数据来自定期报告，存在披露滞后，并非实时仓位；“基金历史表现”也不等于基金经理的个人可归因业绩。该功能只用于理解风险暴露和管理信息，**不产生买卖指令或收益预测**。
+## 数据与边界
 
-### 本地验证
+- 基金净值、持仓、行业和基金经理资料通过 [AKShare](https://github.com/akfamily/akshare) 获取的公开数据整理。
+- 持仓和行业配置来自基金定期报告，存在披露滞后，**并非实时仓位**。
+- 基金历史收益不等于基金经理的个人可归因业绩；经理信息仅展示公开任职资料与在管数据。
+- 数据接口异常时，应以“数据暂不可用”提示用户，不应把历史数据当作当前数据。
+
+## 运行环境
+
+- Python 3.10+
+- `akshare`
+- `pandas`
+- `numpy`
+- `requests`
+
+安装依赖：
+
+```bash
+pip install akshare pandas numpy requests
+```
+
+配置模型接口密钥：
+
+```bash
+# PowerShell
+$env:DEEP_SEEK_KEY = "你的密钥"
+```
+
+运行：
+
+```bash
+python tradeagent.py
+```
+
+程序会要求输入基金代码和个人财务背景，再输出量化指标、基金透视及多角色风险解读。直接回车时默认使用基金代码 `161725`。
+
+## 基金透视
+
+基金透视模块由 `fund_insights.py` 提供，包含：
+
+1. 最新披露期前十大持仓和行业配置；
+2. 与上一报告期相比的持仓比例变化；
+3. 基金经理的所属公司、从业时间、现任基金、在管规模和公开最佳回报；
+4. 基金层面的历史收益与最大回撤。
+
+输出会附带披露期、数据缺失提示和风险边界说明，以避免将历史披露误解为实时建议。
+
+## 测试
+
+运行离线单元测试：
 
 ```bash
 python -m unittest discover -s tests -v
 ```
 
-## Academic Attribution & Inspiration
-This framework is heavily inspired by and adapted from the pioneering research conducted by scholars from **UCLA** and **MIT**:
-* **Paper:** *TradingAgents: Multi-Agents LLM Financial Trading Framework* (2024/2025)
-* **Authors:** Yijia Xiao (UCLA), Edward Sun (UCLA), Di Luo (MIT), and Wei Wang (UCLA)
+检查 Python 语法：
 
-##  Original Framework & Repository
-This project is built upon the theoretical architecture and open-source implementation of the original paper:
-* **Official Repository:** [TauricResearch/TradingAgents](https://github.com/TauricResearch/TradingAgents)
-* **Paper Link:** [arXiv:2412.20138](https://arxiv.org/abs/2412.20138)
+```bash
+python -m py_compile tradeagent.py fund_insights.py
+```
 
-Please star the original repository if you find their foundational multi-agent trading framework inspiring!
+## 设计参考与致谢
 
-##  Key Adaptations for Chinese Undergraduates
-While the original *TradingAgents* framework focused on LLM-driven rule-based trading of US equities (e.g., AAPL, NVDA) via global APIs, this repository adapts the workflow to fit the specific needs and financial boundaries of Chinese college students:
+本项目参考了 [TradingAgents](https://github.com/TauricResearch/TradingAgents) 的多智能体金融分析思路，以及论文 [TradingAgents: Multi-Agents LLM Financial Trading Framework](https://arxiv.org/abs/2412.20138)。
 
-1. **Domestic Mutual Fund Anchoring:** Replaced US stock tools with native Chinese mutual fund infrastructure (`akshare`), allowing analysis of popular domestic sector funds (e.g., Consumer/Liquor, Semiconductors, Healthcare).
-2. **Rigorous MIT Evaluation Metrics:** Fully replicated the core portfolio evaluation criteria specified in the original paper's appendix (Equations S1-S4), computing real-time quantitative metrics based on the last 90 trading days:
-   * **CR** (Cumulative Return)
-   * **ARR** (Annualized Return)
-   * **SR** (Sharpe Ratio)
-   * **MDD** (Maximum Drawdown)
-3. **Structured Communication Protocol:** Enforced the paper's rigid JSON-object messaging constraints between agents to neutralize LLM hallucinations and eliminate the text-overload "telephone effect" common in standard natural language pipelines.
-4. **Student-Centric Risk Guardrails:** Configured the multi-agent debate and Risk Management nodes to translate raw quantitative volatility (specifically MDD) into relatable, empathetic daily-allowance financial warnings (e.g., factoring in a typical 2,000 RMB/month student budget) to prevent impulse investing or capital erosion.
+原始框架主要面向美股交易研究；本项目将数据源和风险表达调整到中国公募基金及年轻投资者的使用场景。它不是原项目的官方实现，也不应被理解为自动交易或基金投顾服务。
