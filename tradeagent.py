@@ -6,6 +6,8 @@ import numpy as np
 import akshare as ak
 import pandas as pd
 
+from fund_insights import get_fund_insight, print_fund_insight
+
 # ==================== 1. 配置 接口 ====================
 DEEP_SEEK_KEY = os.environ.get("DEEP_SEEK_KEY")#使用时请替换成自己的api key，不是deepseek的也可以，此处用deepseek仅为举例子
 
@@ -116,7 +118,7 @@ def calculate_china_fund_metrics(fund_code: str):
 def print_metrics_header(fund_code: str, metrics: dict, trend_summary: str):
     """优先输出名词解释表格和指标数据"""
     print("\n" + "=" * 70)
-     print(f" 基金 [{metrics['fund_name']} | {fund_code}] 专业量化评价指标清算报告")
+    print(f" 基金 [{metrics['fund_name']} | {fund_code}] 专业量化评价指标清算报告")
     print("=" * 70)
 
     print("\n一、 可能用到的名词解释：")
@@ -149,6 +151,10 @@ def run_china_fund_pipeline(fund_code: str, user_status: str):
     metrics, trend_summary = calculate_china_fund_metrics(fund_code)
 
     print_metrics_header(fund_code, metrics, trend_summary)
+    try:
+        print_fund_insight(get_fund_insight(fund_code, ak))
+    except Exception as error:
+        print(f"\n基金透视暂不可用：{error}")
 
     quant_document = {
         "基金代码": fund_code,
