@@ -2,6 +2,23 @@
 
 An interactive, multi-agent quantitative framework designed for financial diagnostics and risk mitigation of Chinese mutual funds, tailored specifically for undergraduate retail investors.
 
+## 基金透视（新增）
+
+在原有净值诊断前，程序会新增一段基于公开披露资料的基金透视：
+
+- 最新披露期的前十大持仓和行业配置；
+- 与上一个报告期相比的持仓比例变化；
+- 基金经理的公开任职资料、在管规模和现任基金最佳回报；
+- 基金成立以来、近一年、近三年、年化收益和成立以来最大回撤。
+
+持仓/行业数据来自定期报告，存在披露滞后，并非实时仓位；“基金历史表现”也不等于基金经理的个人可归因业绩。该功能只用于理解风险暴露和管理信息，**不产生买卖指令或收益预测**。
+
+### 本地验证
+
+```bash
+python -m unittest discover -s tests -v
+```
+
 ## Academic Attribution & Inspiration
 This framework is heavily inspired by and adapted from the pioneering research conducted by scholars from **UCLA** and **MIT**:
 * **Paper:** *TradingAgents: Multi-Agents LLM Financial Trading Framework* (2024/2025)
