@@ -40,7 +40,18 @@ def ask_deepseek_json(prompt: str, role_preset: str) -> dict:
 # ==================== 2. 量化评价指标计算模块 ====================
 def calculate_china_fund_metrics(fund_code: str):
     """计算基金近 90 个交易日的专业评价指标"""
+    fund_name = "未知基金"
     try:
+        try:
+            fund_list = ak.fund_name_em()
+            matched = fund_list[fund_list['基金代码'] == fund_code]
+            if not matched.empty:
+                fund_name = matched['基金简称'].values[0]
+            else:
+                fund_name = f"未命名基金({fund_code})"
+        except Exception:
+            fund_name = f"公募基金({fund_code})"
+
         fund_df = ak.fund_open_fund_info_em(symbol=fund_code, indicator="单位净值走势")
         fund_df['净值日期'] = pd.to_datetime(fund_df['净值日期'])
         fund_df = fund_df.sort_values(by='净值日期', ascending=True)
@@ -77,6 +88,7 @@ def calculate_china_fund_metrics(fund_code: str):
             sharpe_ratio = 0.0
 
         metrics = {
+            "fund_name": fund_name,
             "cr": f"{cr:.2f}%",
             "arr": f"{arr:.2f}%",
             "sr": f"{sharpe_ratio:.2f}",
@@ -104,7 +116,7 @@ def calculate_china_fund_metrics(fund_code: str):
 def print_metrics_header(fund_code: str, metrics: dict, trend_summary: str):
     """优先输出名词解释表格和指标数据"""
     print("\n" + "=" * 70)
-    print(f" 基金代码 [{fund_code}] 专业量化评价指标清算报告")
+     print(f" 基金 [{metrics['fund_name']} | {fund_code}] 专业量化评价指标清算报告")
     print("=" * 70)
 
     print("\n一、 可能用到的名词解释：")
