@@ -39,7 +39,7 @@
 
 ## 本地验证
 
-如需在本地运行测试并验证环境配置：
+如需在本地运行测试并验证环境配置，请在终端运行：
 
 ```bash
 python -m unittest discover -s tests -v
