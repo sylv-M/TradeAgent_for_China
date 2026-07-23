@@ -12,7 +12,7 @@
 * **官方仓库：** [TauricResearch/TradingAgents](https://github.com/TauricResearch/TradingAgents)
 * **原文链接：** [arXiv:2412.20138](https://arxiv.org/abs/2412.20138)
 
-如果您觉得他们奠基性的muti-agent交易框架令您有所启发，请前往原仓库点亮 Star！
+如果您觉得他们奠基性的multi-agent交易框架令您有所启发，请前往原仓库点亮 Star！
 
 ## 核心功能与基金透视
 
