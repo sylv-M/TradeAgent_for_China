@@ -1,6 +1,6 @@
 # China-Fund-Multi-Agent
-> *如需中文版本，请点击:* (README_CN.md)
-
+> *如需中文版本，请点击:* [Chinese version](README_CN.md)
+> 
 An interactive, multi-agent quantitative framework designed for financial diagnostics and risk mitigation of Chinese mutual funds, tailored specifically for undergraduate retail investors.
 
 ## Academic Attribution & Inspiration
