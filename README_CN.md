@@ -10,9 +10,9 @@
 ## 原始框架与开源仓库
 本项目基于原论文的理论架构与开源实现构建来源：
 * **官方仓库：** [TauricResearch/TradingAgents](https://github.com/TauricResearch/TradingAgents)
-* **论文链接：** [arXiv:2412.20138](https://arxiv.org/abs/2412.20138)
+* **原文链接：** [arXiv:2412.20138](https://arxiv.org/abs/2412.20138)
 
-如果您觉得他们奠基性的多 Agent 交易框架有所启发，请前往原仓库点亮 Star！
+如果您觉得他们奠基性的muti-agent交易框架令您有所启发，请前往原仓库点亮 Star！
 
 ## 核心功能与基金透视
 
